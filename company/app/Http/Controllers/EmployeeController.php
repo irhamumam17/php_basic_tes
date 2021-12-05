@@ -6,6 +6,7 @@ use App\Helpers\ResponseFormatter;
 use App\Models\Employee;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
+use App\Models\Company;
 
 class EmployeeController extends Controller
 {
@@ -16,7 +17,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        return view('employees.index', ['employees' => Employee::paginate(5)]);
+        return view('employee.index', ['employees' => Employee::paginate(5), 'companies' => Company::all()]);
     }
 
     /**
@@ -44,6 +45,14 @@ class EmployeeController extends Controller
     public function show(Employee $employee)
     {
         //
+    }
+    public function edit(Employee $employee)
+    {
+        try {
+            return ResponseFormatter::success($employee, 'Employee found successfully');
+        } catch (\Throwable $th) {
+            return ResponseFormatter::error(message: $th->getMessage());
+        }
     }
 
     /**
